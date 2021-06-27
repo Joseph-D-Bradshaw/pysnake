@@ -1,5 +1,8 @@
 import pygame
-from typing import List
+import threading
+import time
+from typing import Callable, List
+
 from constants import CELL_SIZE, GREEN, HEIGHT, WIDTH, LIGHT_GREY
 
 def create_and_draw_grid(surface) -> List[pygame.Rect]:

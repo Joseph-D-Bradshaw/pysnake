@@ -12,10 +12,11 @@ class Heading(Enum):
 
     
 class BodyPart:
-    def __init__(self, x: int, y: int, ref=None, head=False):
+    def __init__(self, x: int, y: int, ref=None, is_head=False):
         self.x = x
         self.y = y
         self.ref = ref
+        self.is_head = is_head
         print(f'LOG CREATION OF PART: {self.__repr__()}')
         
     @property
@@ -31,7 +32,7 @@ class BodyPart:
 class Snake:
     def __init__(self, surface, x: int, y: int):
         self._surface = surface
-        self.head = BodyPart(x, y, head=True)
+        self.head = BodyPart(x, y, is_head=True)
         self.heading = Heading.EAST
         
     def draw(self):
@@ -46,13 +47,15 @@ class Snake:
         while tail.next:
             tail = tail.next
         # calculate where to add part by heading
-        x = tail.x + self.heading.value.x
-        y = tail.y + self.heading.value.y
+        x = tail.x - self.heading.value.x
+        y = tail.y - self.heading.value.y
         tail.ref = BodyPart(x, y)
         
     def move(self):
+        # TODO: Improve move logic so each part moves to the previous parts position
+        #       Doubly Linked List is probably good for this now
         part = self.head
-        while part.next:
-            part.x * self.heading.value.x
-            part.y * self.heading.value.y
+        while part:
+            part.x += self.heading.value.x
+            part.y += self.heading.value.y
             part = part.next
